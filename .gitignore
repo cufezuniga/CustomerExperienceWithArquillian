@@ -1,0 +1,14 @@
+# Eclipse Files
+*.project
+*.settings
+target
+target/
+.project
+.settings
+.settings/
+.classpath
+*.classpath
+.metadata
+.metadata/
+design
+design/
