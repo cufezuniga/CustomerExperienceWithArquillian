@@ -11,7 +11,6 @@ import javax.inject.Named;
 import demo.arquillian.monolith.commons.domain.OrderItem;
 import demo.arquillian.monolith.inventory.dao.InventoryDAO;
 import demo.arquillian.monolith.inventory.entity.Inventory;
-import demo.arquillian.monolith.inventory.exception.InvalidOrderException;
 
 @Stateless
 @Named("InventoryService")

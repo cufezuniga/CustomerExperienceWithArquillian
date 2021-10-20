@@ -1,4 +1,4 @@
-package demo.arquillian.monolith.inventory.model;
+package demo.arquillian.monolith.commons.utils;
 
 public class MessageHelper {
 

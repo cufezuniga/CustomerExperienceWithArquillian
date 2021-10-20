@@ -1,4 +1,4 @@
-package demo.arquillian.monolith.inventory.exception;
+package demo.arquillian.monolith.purchase.exception;
 
 public class InvalidOrderException extends Exception {
 

@@ -12,11 +12,11 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import demo.arquillian.monolith.commons.domain.OrderItem;
+import demo.arquillian.monolith.commons.utils.MessageHelper;
 import demo.arquillian.monolith.customer.entity.Customer;
 import demo.arquillian.monolith.inventory.entity.Inventory;
 import demo.arquillian.monolith.inventory.entity.Item;
-import demo.arquillian.monolith.inventory.exception.InvalidOrderException;
-import demo.arquillian.monolith.inventory.model.MessageHelper;
+import demo.arquillian.monolith.purchase.exception.InvalidOrderException;
 import demo.arquillian.monolith.purchase.dao.PurchaseOrderDAO;
 import demo.arquillian.monolith.purchase.entity.ItemOrdered;
 import demo.arquillian.monolith.purchase.entity.PurchaseOrder;

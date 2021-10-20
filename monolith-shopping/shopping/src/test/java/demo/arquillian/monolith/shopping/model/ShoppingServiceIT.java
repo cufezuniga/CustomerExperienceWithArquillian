@@ -2,9 +2,9 @@ package demo.arquillian.monolith.shopping.model;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,12 +16,14 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import demo.arquillian.monolith.commons.domain.Category;
 import demo.arquillian.monolith.commons.domain.OrderItem;
 import demo.arquillian.monolith.commons.domain.SubCategory;
+import demo.arquillian.monolith.commons.utils.MessageHelper;
 import demo.arquillian.monolith.commons.utils.QueryHelper;
 import demo.arquillian.monolith.customer.dao.CustomerDAO;
 import demo.arquillian.monolith.customer.entity.Account;
@@ -32,10 +34,9 @@ import demo.arquillian.monolith.customer.repository.JDBCCustomerRepository;
 import demo.arquillian.monolith.inventory.dao.InventoryDAO;
 import demo.arquillian.monolith.inventory.entity.Inventory;
 import demo.arquillian.monolith.inventory.entity.Item;
-import demo.arquillian.monolith.inventory.exception.InvalidOrderException;
+import demo.arquillian.monolith.purchase.exception.InvalidOrderException;
 import demo.arquillian.monolith.inventory.interfaces.IInventoryRepository;
 import demo.arquillian.monolith.inventory.model.InventoryService;
-import demo.arquillian.monolith.inventory.model.MessageHelper;
 import demo.arquillian.monolith.inventory.repository.JDBCInventoryRepository;
 import demo.arquillian.monolith.purchase.dao.PurchaseOrderDAO;
 import demo.arquillian.monolith.purchase.entity.ItemOrdered;
@@ -49,23 +50,52 @@ public class ShoppingServiceIT {
 
 	@Deployment
 	public static Archive<?> createDeployment() {
-		Archive<?> artifact = ShrinkWrap.create(WebArchive.class, "shopping-test.war")
+		WebArchive[] file = Maven.resolver().loadPomFromFile("pom.xml")
+	            .importCompileAndRuntimeDependencies()
+	            .resolve()
+	            .withTransitivity().as(WebArchive.class);
+		Archive<?> warDeployment = ShrinkWrap.create(WebArchive.class, "shopping-test.war")
+//				.addAsLibraries(file)
+				// **** Dependencies for shopping-service ****
 				.addClass(ShoppingService.class)
-				.addClass(InventoryService.class).addClass(InventoryDAO.class).addClass(Inventory.class)
-				.addClass(CustomerService.class).addClass(CustomerDAO.class).addClass(Customer.class)
-				.addClass(OrderItem.class).addClass(SubCategory.class).addClass(Category.class).addClass(Item.class)
-				.addClass(Account.class).addClass(IInventoryRepository.class).addClass(ICustomerRepository.class)
-				.addClass(JDBCInventoryRepository.class).addClass(JDBCCustomerRepository.class)
-				.addClass(QueryHelper.class).addClass(InvalidOrderException.class).addClass(ShoppingUtils.class)
+				
+				// **** Dependencies for inventory-service
+				.addClass(InventoryService.class)
+				.addClass(InventoryDAO.class)
+				.addClass(Inventory.class)
+				.addClass(Item.class)
+				.addClass(IInventoryRepository.class)
+				.addClass(JDBCInventoryRepository.class)
+				
+				// **** Dependencies for customer-service
+				.addClass(CustomerService.class)
+				.addClass(CustomerDAO.class)
+				.addClass(Customer.class)
+				.addClass(Account.class)
+				.addClass(ICustomerRepository.class)
+				.addClass(JDBCCustomerRepository.class)
+				
+				// **** Dependencies for commons
+				.addClass(OrderItem.class)
+				.addClass(SubCategory.class)
+				.addClass(Category.class)
+				.addClass(QueryHelper.class)
 				.addClass(MessageHelper.class)
+				
 				// All dependencies from the purchase module
-				.addClass(PurchaseOrder.class).addClass(PurchaseOrderService.class).addClass(PurchaseOrderDAO.class)
-				.addClass(ItemOrdered.class).addClass(IPurchaseOrderRepository.class)
+				.addClass(PurchaseOrder.class)
+				.addClass(PurchaseOrderService.class)
+				.addClass(PurchaseOrderDAO.class)
+				.addClass(ItemOrdered.class)
+				.addClass(IPurchaseOrderRepository.class)
 				.addClass(JDBCPurchaseOrderRepository.class) // demo unsatisfied dependency
-				.addClass(JDBCInventoryRepository.class).addAsResource("META-INF/persistence.xml")
+				.addClass(JDBCInventoryRepository.class)
+				.addClass(InvalidOrderException.class)
+				
+				.addAsResource("META-INF/persistence.xml")
 				.addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
 
-		return artifact;
+		return warDeployment;
 	}
 
 	@Inject
