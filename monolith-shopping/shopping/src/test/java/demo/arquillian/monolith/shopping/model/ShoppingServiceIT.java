@@ -50,10 +50,10 @@ public class ShoppingServiceIT {
 
 	@Deployment
 	public static Archive<?> createDeployment() {
-		WebArchive[] file = Maven.resolver().loadPomFromFile("pom.xml")
-	            .importCompileAndRuntimeDependencies()
-	            .resolve()
-	            .withTransitivity().as(WebArchive.class);
+//		WebArchive[] file = Maven.resolver().loadPomFromFile("pom.xml")
+//	            .importCompileAndRuntimeDependencies()
+//	            .resolve()
+//	            .withTransitivity().as(WebArchive.class);
 		Archive<?> warDeployment = ShrinkWrap.create(WebArchive.class, "shopping-test.war")
 //				.addAsLibraries(file)
 				// **** Dependencies for shopping-service ****
