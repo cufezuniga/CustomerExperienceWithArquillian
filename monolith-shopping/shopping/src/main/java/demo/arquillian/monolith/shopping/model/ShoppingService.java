@@ -29,20 +29,14 @@ public class ShoppingService {
 	
 	@EJB
 	private PurchaseOrderService purchaseOrderService;
-	
+
+	/**
+	 * A small example of a legacy monolith that was partially refactored into a maven project with a parent BOM 
+	 * and child modules. Below is a small example of a external service (API) that was refactored as much as possible. It has
+	 * references to several other classes that were also refactored. The service call below is tested with arquillian
+	 * to verify the code still behaves as it should and detects any problems in any of the refactored code. 
+	 */
 	public PurchaseOrder processOrder(String customerId, List<OrderItem> order) throws InvalidOrderException {
-		/**
-		 * 1. Lookup customer and account.
-		 * 2. Get inventory for each of the items being purchased.
-		 * 3. Check each item ordered against its inventory to determine if the quantity is 
-		 *    sufficient.
-		 *       If so, continue to line 4
-		 *       If not, throw exception.
-		 * 4. Create purchase order.
-		 * 5. Persist purchase order and updating inventory with a transaction.
-		 * 6. Email customer with order confirmation.
-		 */
-		
 		List<Inventory> inventoryForOrder = inventoryService.getInventoryforOrder(order);
 		
 		order = purchaseOrderService.processOrderItems(order, inventoryForOrder);
@@ -52,10 +46,6 @@ public class ShoppingService {
 		PurchaseOrder po = purchaseOrderService.newPurchaseOrder(customer, order);
 		
 		finalizePurchase(po, inventoryForOrder);
-		
-		/** *******************************
-		 * Other code like emailing customer with order confirmation, alerting order fulfillment system, etc.
-		 */
 		
 		return po;
 	}	
