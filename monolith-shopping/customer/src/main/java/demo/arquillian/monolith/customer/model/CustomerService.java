@@ -20,4 +20,8 @@ public class CustomerService {
 	public void createNewCustomerAccount(Customer customer) {
 		customerDao.createNewCustomerAccount(customer);
 	}
+	
+	public void deleteCustomerAccount(Customer customer) {
+		customerDao.deleteCustomerAccount(customer);
+	}
 }

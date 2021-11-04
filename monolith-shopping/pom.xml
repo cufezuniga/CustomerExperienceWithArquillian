@@ -14,7 +14,6 @@
 	<description></description>
 
 	<properties>
-		<root.dir>${project.basedir}</root.dir>
 		<version.wildfly.maven.plugin>2.0.0.Final</version.wildfly.maven.plugin>
 		<version.checkstyle>8.5</version.checkstyle>
 		<version.jaxws-tools-maven-plugin>1.2.3.Final</version.jaxws-tools-maven-plugin>
@@ -117,6 +116,40 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>integration</id>
+			<dependencies>
+				<dependency>
+					<groupId>org.wildfly.arquillian</groupId>
+					<artifactId>wildfly-arquillian-container-managed</artifactId>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-failsafe-plugin</artifactId>
+						<executions>
+							<execution>
+								<goals>
+									<goal>verify</goal>
+									<goal>integration-test</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<includes>
+								<include>**/*IT.java</include>
+							</includes>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 	<modules>
 		<module>commons</module>

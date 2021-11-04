@@ -1,5 +1,6 @@
 package demo.arquillian.monolith.customer.dao;
 
+
 import javax.inject.Inject;
 
 import demo.arquillian.monolith.customer.entity.Customer;
@@ -20,5 +21,9 @@ public class CustomerDAO {
 	
 	public void createNewCustomerAccount(Customer customer) {
 		customerRepository.createNewCustomerAccount(customer);
+	}
+	
+	public void deleteCustomerAccount(Customer customer) {
+		customerRepository.deleteCustomerAccount(customer);	
 	}
 }

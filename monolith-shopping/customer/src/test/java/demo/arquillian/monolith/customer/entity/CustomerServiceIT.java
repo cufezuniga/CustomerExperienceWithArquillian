@@ -1,6 +1,7 @@
 package demo.arquillian.monolith.customer.entity;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -53,6 +54,11 @@ public class CustomerServiceIT {
 		
 		Account account = savedCustomer.getAccount();
 		assertNotNull(account);
+		
+		
+		customerService.deleteCustomerAccount(savedCustomer);
+		Customer removedCustomer = customerService.getCustomerAccount(id);
+		assertNull("Customer '" + id +"' should be deleted.", removedCustomer);
 	}
 	
 	private Customer createNewAccount() {

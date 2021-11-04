@@ -7,4 +7,6 @@ public interface ICustomerRepository {
 	public Customer getCustomerById(String customerId);
 	
 	public void createNewCustomerAccount(Customer customer);
+	
+	public void deleteCustomerAccount(Customer customer);
 }
