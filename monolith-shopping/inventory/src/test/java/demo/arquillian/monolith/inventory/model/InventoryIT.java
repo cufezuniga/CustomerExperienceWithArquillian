@@ -42,7 +42,7 @@ public class InventoryIT {
     		.addClass(OrderItem.class)
     		.addClass(IInventoryRepository.class)
     		.addClass(JDBCInventoryRepository.class)
-        	.addAsResource("META-INF/persistence.xml")
+        	.addAsResource("test-persistence.xml", "META-INF/persistence.xml")
             .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
         
         return artifact;

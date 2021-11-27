@@ -37,7 +37,7 @@ public class CustomerServiceIT {
     		.addClass(CustomerDAO.class)
     		.addClass(ICustomerRepository.class)
     		.addClass(JDBCCustomerRepository.class)
-        	.addAsResource("META-INF/persistence.xml")
+    		.addAsResource("test-persistence.xml", "META-INF/persistence.xml")
             .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
         
         return artifact;
