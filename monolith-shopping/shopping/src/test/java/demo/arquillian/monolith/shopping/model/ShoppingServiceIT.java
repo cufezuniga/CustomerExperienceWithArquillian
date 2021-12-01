@@ -50,12 +50,7 @@ public class ShoppingServiceIT {
 
 	@Deployment
 	public static Archive<?> createDeployment() {
-//		WebArchive[] file = Maven.resolver().loadPomFromFile("pom.xml")
-//	            .importCompileAndRuntimeDependencies()
-//	            .resolve()
-//	            .withTransitivity().as(WebArchive.class);
 		Archive<?> warDeployment = ShrinkWrap.create(WebArchive.class, "shopping-test.war")
-//				.addAsLibraries(file)
 				// **** Dependencies for shopping-service ****
 				.addClass(ShoppingService.class)
 				
@@ -82,16 +77,14 @@ public class ShoppingServiceIT {
 				.addClass(QueryHelper.class)
 				.addClass(MessageHelper.class)
 				
-				// All dependencies from the purchase module
-				.addClass(PurchaseOrder.class)
-				.addClass(PurchaseOrderService.class)
-				.addClass(PurchaseOrderDAO.class)
-				.addClass(ItemOrdered.class)
-				.addClass(IPurchaseOrderRepository.class)
-				.addClass(JDBCPurchaseOrderRepository.class) // demo unsatisfied dependency
-				.addClass(JDBCInventoryRepository.class)
-				.addClass(InvalidOrderException.class)
-				
+				/** All dependencies from the purchase module.
+				 * Add all classes with one fell swoop to save time trying to include
+				 * all the classes needed to get a monolith application to build.
+				**/
+				.addPackages(true, "demo.arquillian.monolith.purchase")
+
+				// Use the persistence context configurad in src/test/resources rather than the one in 
+				// src/main/resources
 				.addAsResource("test-persistence.xml", "META-INF/persistence.xml")
 				.addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
 
